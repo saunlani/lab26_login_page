@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
@@ -391,6 +392,9 @@ namespace lab26_login_page.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            CoffeeShopDBEntities db = new CoffeeShopDBEntities();
+            List<Item> cart = (List<Item>)(Session["Cart"]);
+            cart.Clear();
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
         }

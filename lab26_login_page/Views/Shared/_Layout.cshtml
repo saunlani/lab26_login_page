@@ -1,9 +1,16 @@
-﻿<!DOCTYPE html>
+﻿@using lab26_login_page.Models;
+<script>
+    function emptied() {
+        alert("Cart emptied!");
+    }
+
+</script>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Chirpus Coffee</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -17,13 +24,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Chirpus Coffee", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Menu", "Menu", "Home")</li>
+                    <li><a href="#myModal" role="button" data-toggle="modal" rel="tooltip" data-original-title='Cart'>Cart</a></li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -33,12 +40,48 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Chirpus Coffee</p>
         </footer>
     </div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Cart</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        <ul>
+                            @foreach (Item i in (List<Item>)(Session["Cart"]))
+                            {
+                                <li>@i.Name - $@i.Price</li>
+
+                            }
+                        </ul>
+                        @ViewBag.subTotal<br />
+                        @ViewBag.tax<br />
+                        @ViewBag.grandTotal<br />
+                        <a href="~/Home/Clear"
+                           onclick="emptied()" class="btn btn-primary">Empty Cart</a>
+
+
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </body>
 </html>
